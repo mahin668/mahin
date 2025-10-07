@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
 </head>
 <body>
   <!DOCTYPE html>
@@ -20,9 +22,11 @@
     <div class="wrap">
       <div class="card">
         <div class="head">
-          <h2>Users</h2>
+          <h2>ADMIN</h2>
           <button class="btn primary" id="addBtn">+ Add User</button>
-          <search style="width: 22%;" class="search-ber">search her</search>
+          <search style="width: 22%;" class="search-ber"><span class="material-symbols-outlined">
+            search
+          </span>search her...</search>
         </div>
         <div style="overflow:auto">
           <table class="table" id="tbl">
@@ -40,6 +44,7 @@
               <!-- rows render here -->
             </tbody>
           </table>
+         
         </div>
         <div id="empty" class="empty" hidden>No users yet. Click “Add User”.</div>
       </div>
@@ -87,12 +92,22 @@
             <div></div>
           </div>
         </form>
+        
         <footer>
           <button class="btn ghost" id="cancelBtn">Cancel</button>
           <button class="btn primary" id="saveBtn">Save</button>
         </footer>
       </div>
     </div>
+    <section class="page">
+      <a href="#">prev</a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a href="#">6</a>
+    </section>
   
     <script src="script.js"></script>
       
