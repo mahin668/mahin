@@ -1,5 +1,5 @@
 var numbers = [1,2,3,4,5];
-
+//brokem mahin
 function sum (n) {
         var summation = 0;
 
