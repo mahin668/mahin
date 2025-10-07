@@ -45,6 +45,15 @@
       font-weight: 800;
       letter-spacing: .2px;
      }
+     .search-ber{
+      width: auto;
+      height: 22px;
+      background-color: #2c2c2f;
+      padding: 16px;
+      text-align: center;
+      align-items: center;
+      justify-content: space-between;
+     }
      .btn{
       appearance: none;
       border: 0;
