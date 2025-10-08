@@ -172,7 +172,6 @@ if (!data.length) {
   ];
   save(); // localStorage e save kore
 }
-
 // ---------------------- INITIAL LOAD ------------------------
 render(); // page load e table render kore
 
