@@ -13,6 +13,7 @@ const empty = document.getElementById('empty');
 const modal = document.getElementById('modal');
 const form = document.getElementById('form');
 const modalTitle = document.getElementById('modalTitle');
+const search = document.getElementById('search')
 
 // salary ke $ soho format kore dekhabe (e.g. $5,150.00)
 const fmtMoney = n =>
@@ -23,8 +24,10 @@ const fmtMoney = n =>
   });
 
 // localStorage e data save korar function
+//JSON.stringify(obj) → object → string (data object thaka string kore)
+//JSON.parse(string) → string → object (data string thaka object kore)
 const save = () => localStorage.setItem(LS_KEY, JSON.stringify(data));
-
+//localStorage.setItem (string data browser a save kore)
 // ---------------------- TABLE RENDER ------------------------
 function render() {
   // jodi kono data na thake, empty message show korbe
@@ -99,7 +102,7 @@ document.getElementById('saveBtn').onclick = e => {
 
   // save + render + modal close
   save();
-  render();
+  render(); //সেভের পর UI refresh করে নতুন data দেখায়
   closeModal();
 };
 
@@ -132,7 +135,21 @@ tbody.addEventListener('click', e => {
     form.dob.value = u.dob;
     openModal('Edit User'); // modal open kore
   }
+  // jodi delete button click hoi
+  if (iDel !== undefined) {
+    //অংশকাজ(iDel):delete করতে চাওয়া index (string হিসেবে আসে)
+    // Number(iDel):string কে number বানায়|
+    // idx:সেই number index টা ধরে রাখে|
 
-
+    const idx = Number(iDel); //এই লাইনটা iDel নামের কোনো value (string) কে number-এ রূপান্তর করছে| এবং সেটাকে idx (index) নামে নতুন ভ্যারিয়েবলে রাখছে।
+    // confirm popup show kore delete korar age
+    if (confirm(`Delete "${data[idx].name}"?`)) {
+      data.splice(idx, 1); // oi user ke array theke delete kore
+      save(); // update save kore
+      render(); // table refresh kore
+    }
+  }
 });
+
+
 
