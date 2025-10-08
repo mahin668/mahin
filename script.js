@@ -88,7 +88,7 @@ document.getElementById('addBtn').onclick = () => {
 
 // ---------------------- SAVE BUTTON ------------------------
 document.getElementById('saveBtn').onclick = e => {
-  e.preventDefault(); // form auto reload thake rokhe
+  e.preventDefault(); // e.preventDefault(): reload/submit রোধ করে
   if (!form.reportValidity()) return; // form validation check kore
 
   // form theke sob input value neya
@@ -151,5 +151,29 @@ tbody.addEventListener('click', e => {
     render(); // table refresh kore
   }
 });
+  // ---------------------- SAMPLE DATA ------------------------
+if (!data.length) {
+  // jodi localStorage khali thake, default data add korbe
+  data = [
+    {
+      name: 'John Doe',
+      email: 'john@company.com',
+      id: 'EMP-1001',
+      salary: 5150,
+      dob: '1992-03-14',
+    },
+    {
+      name: 'Patricia Foe',
+      email: 'patricia@company.com',
+      id: 'EMP-1002',
+      salary: 6120,
+      dob: '1990-11-02',
+    },
+  ];
+  save(); // localStorage e save kore
+}
+
+// ---------------------- INITIAL LOAD ------------------------
+render(); // page load e table render kore
 
 
