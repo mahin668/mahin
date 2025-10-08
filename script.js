@@ -3,7 +3,7 @@ const LS_KEY = 'users-crud-v1';
 
 // localStorage theke data ana; jodi na thake tahole empty array ([]).
 let data = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-
+           //String ➜ Object
 // Edit mode a kon index e user edit hocche ta rakhbe
 let editingIndex = null;
 
@@ -154,28 +154,4 @@ tbody.addEventListener('click', e => {
   
 });
 
-  // ---------------------- SAMPLE DATA ------------------------
-if (!data.length) {
-  // jodi localStorage khali thake, default data add korbe
-  data = [
-    {
-      name: 'John Doe',
-      email: 'john@company.com',
-      id: 'EMP-1001',
-      salary: 5150,
-      dob: '1992-03-14',
-    },
-    {
-      name: 'Patricia Foe',
-      email: 'patricia@company.com',
-      id: 'EMP-1002',
-      salary: 6120,
-      dob: '1990-11-02',
-    },
-  ];
-  save(); // localStorage e save kore
-}
-
-// ---------------------- INITIAL LOAD ------------------------
-render(); // page load e table render kore
 
