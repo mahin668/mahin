@@ -14,6 +14,8 @@ const modal = document.getElementById('modal');
 const form = document.getElementById('form');
 const modalTitle = document.getElementById('modalTitle');
 const search = document.getElementById('search')
+const value = document.getElementById('value')
+
 
 // salary ke $ soho format kore dekhabe (e.g. $5,150.00)
 const fmtMoney = n =>
@@ -128,7 +130,7 @@ tbody.addEventListener('click', e => {
     editingIndex = Number(iEdit); // kon user edit hocche ta dhore
     const u = data[editingIndex]; // oi user er info
     // form e user data fill kore
-    form.name.value = u.name;
+    form.name.value = u.name; //form-এর name ইনপুট ফিল্ডে u অবজেক্টের name মানটা বসাও।
     form.email.value = u.email;
     form.id.value = u.id;
     form.salary.value = u.salary;
@@ -149,7 +151,31 @@ tbody.addEventListener('click', e => {
       render(); // table refresh kore
     }
   }
+  
 });
 
+  // ---------------------- SAMPLE DATA ------------------------
+if (!data.length) {
+  // jodi localStorage khali thake, default data add korbe
+  data = [
+    {
+      name: 'John Doe',
+      email: 'john@company.com',
+      id: 'EMP-1001',
+      salary: 5150,
+      dob: '1992-03-14',
+    },
+    {
+      name: 'Patricia Foe',
+      email: 'patricia@company.com',
+      id: 'EMP-1002',
+      salary: 6120,
+      dob: '1990-11-02',
+    },
+  ];
+  save(); // localStorage e save kore
+}
 
+// ---------------------- INITIAL LOAD ------------------------
+render(); // page load e table render kore
 
