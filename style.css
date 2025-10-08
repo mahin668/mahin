@@ -28,6 +28,9 @@
       margin: 0 auto;
       padding: 40px 20px;     
      }
+     .Search-ber{
+      width: 150px;
+     }
      .card{
       background-color: var(--card);
       border-radius: var(--radius);
@@ -46,19 +49,7 @@
       font-weight: 800;
       letter-spacing: .2px;
      }
-     .search-ber{
-      width: auto;
-      height: 22px;
-      background-color: #4c4c7c00;
-      padding: 18px;
-      align-items: center;
-      text-align: center;
-      border: 1px solid;
-      border-color: #262c4e;
-      display: flex;
-      gap: 10px;
-      border-radius: 6px;
-     }
+
      .btn{
       appearance: none;
       border: 0;
@@ -75,6 +66,7 @@
       background: transparent;
       color: var(--muted);
      }
+    
      .table{
       width: 100%;
       border-collapse: collapse;
