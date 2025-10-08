@@ -12,8 +12,8 @@ const empty = document.getElementById('empty');
 const modal = document.getElementById('modal');
 const form = document.getElementById('form');
 const modalTitle = document.getElementById('modalTitle');
-const search = document.getElementById('search')
-const value = document.getElementById('value')
+
+
 
 
 // salary ke $ soho format kore dekhabe (e.g. $5,150.00)
