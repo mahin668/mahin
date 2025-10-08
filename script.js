@@ -4,8 +4,7 @@ const LS_KEY = 'users-crud-v1';
 // localStorage theke data ana; jodi na thake tahole empty array ([]).
 let data = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
            //String ➜ Object
-// Edit mode a kon index e user edit hocche ta rakhbe
-let editingIndex = null;
+
 
 // HTML theke table body, empty message, modal, form etc. select kora holo
 const tbody = document.getElementById('tbody');
@@ -63,7 +62,7 @@ function render() {
     </tr>
   `
     )
-    .join(''); // join kore sob row combine korbe
+
 }
 
 // ---------------------- MODAL CONTROL ------------------------
@@ -126,6 +125,7 @@ tbody.addEventListener('click', e => {
     iDel = e.target.dataset.del;
 
   // jodi edit button click hoi
+  //ইউজার edit করতে চাইলে সেই ইউজারের ডেটা form-এ auto fill করে modal খুলে দেয়|
   if (iEdit !== undefined) {
     editingIndex = Number(iEdit); // kon user edit hocche ta dhore
     const u = data[editingIndex]; // oi user er info
@@ -144,14 +144,12 @@ tbody.addEventListener('click', e => {
     // idx:সেই number index টা ধরে রাখে|
 
     const idx = Number(iDel); //এই লাইনটা iDel নামের কোনো value (string) কে number-এ রূপান্তর করছে| এবং সেটাকে idx (index) নামে নতুন ভ্যারিয়েবলে রাখছে।
-    // confirm popup show kore delete korar age
-    if (confirm(`Delete "${data[idx].name}"?`)) {
-      data.splice(idx, 1); // oi user ke array theke delete kore
-      save(); // update save kore
-      render(); // table refresh kore
-    }
+
+    confirm(`Delete "${data[idx].name}"?`);
+    data.splice(idx, 1); // oi user ke array theke delete kore
+    save(); // update save kore
+    render(); // table refresh kore
   }
-  
 });
 
 
