@@ -1,159 +1,166 @@
-// LocalStorage er key name set kora holo
+// ---------------------- LOCALSTORAGE & DATA ----------------------
+
+// Set localStorage key for storing users
 const LS_KEY = 'users-crud-v1';
 
-// localStorage theke data ana; jodi na thake tahole empty array ([]).
-let data = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-           //String ➜ Object
+// Get data from localStorage; if not present, start with empty array
+let data = JSON.parse(localStorage.getItem(LS_KEY)) || [];
 
+// Keeps track of which user is currently being edited; null means no edit
+let editingIndex = null;
 
-// HTML theke table body, empty message, modal, form etc. select kora holo
-const tbody = document.getElementById('tbody');
-const empty = document.getElementById('empty');
-const modal = document.getElementById('modal');
-const form = document.getElementById('form');
-const modalTitle = document.getElementById('modalTitle');
+// ---------------------- HTML ELEMENTS ----------------------
 
+// Select HTML elements we'll work with
+const form = document.getElementById('form'); // User form
+const tbody = document.getElementById('tbody'); // Table body where rows will be added
+const modal = document.getElementById('modal'); // Modal popup
+const modalTitle = document.getElementById('modalTitle'); // Modal title text
+const emptyMsg = document.getElementById('empty'); // Message shown if table is empty
+const search = document.getElementById('search'); // Search input box
 
+// ---------------------- RENDER FUNCTION ----------------------
 
+// Function to render the table rows
+// list parameter allows filtered data for search; default = all data
+function render(list = data) {
+  tbody.innerHTML = ''; // Clear existing table rows
 
-// salary ke $ soho format kore dekhabe (e.g. $5,150.00)
-const fmtMoney = n =>
-  '$' +
-  Number(n).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
-// localStorage e data save korar function
-//JSON.stringify(obj) → object → string (data object thaka string kore)
-//JSON.parse(string) → string → object (data string thaka object kore)
-const save = () => localStorage.setItem(LS_KEY, JSON.stringify(data));
-//localStorage.setItem (string data browser a save kore)
-// ---------------------- TABLE RENDER ------------------------
-function render() {
-  // jodi kono data na thake, empty message show korbe
-  if (!data.length) {
-    tbody.innerHTML = ''; // table clear
-    empty.hidden = false; // empty message visible
-    return;
+  if (list.length === 0) {
+    // If no data to show
+    emptyMsg.hidden = false; // Show "empty" message
+    return; // Stop function here
   }
 
-  // jodi data thake, empty message hide hobe
-  empty.hidden = true;
+  emptyMsg.hidden = true; // Hide empty message if data exists
 
-  // data er upor loop kore sob user table e show korbe
-  tbody.innerHTML = data
-    .map(
-      (u, i) => `
-    <tr>
+  // Loop through each user and create table rows dynamically
+  list.forEach((u, i) => {
+    const row = document.createElement('tr'); // Create <tr> element
+    row.innerHTML = `
       <td>${u.name}</td>
       <td>${u.email}</td>
       <td>${u.id}</td>
-      <td>${fmtMoney(u.salary)}</td>
+      <td>${u.salary}</td>
       <td>${u.dob}</td>
       <td>
-        <div class="actions">
-          <!-- Edit button -->
-          <button class="icon-btn ok" data-edit="${i}" title="Edit">✎</button>
-          <!-- Delete button -->
-          <button class="icon-btn warn" data-del="${i}" title="Delete">✕</button>
-        </div>
+        <button class="btn small" onclick="editUser(${i})">✎</button>    <!-- Edit button -->
+        <button class="btn small danger" onclick="deleteUser(${i})">🗑️</button>  <!-- Delete button -->
       </td>
-    </tr>
-  `
-    )
-
+    `;
+    tbody.appendChild(row); // Add row to table body
+  });
 }
 
-// ---------------------- MODAL CONTROL ------------------------
+// ---------------------- MODAL CONTROL ----------------------
+
+// Function to open modal with given title
 const openModal = (title = 'Add User') => {
-  // Modal open korar function
-  modalTitle.textContent = title; // Modal title set kore
-  modal.classList.add('open'); // open class add kore modal show kore
+  modalTitle.textContent = title; // Set modal title text
+  modal.classList.add('open'); // Add "open" class to show modal
 };
 
+// Function to close modal
 const closeModal = () => {
-  // Modal close korar function
-  modal.classList.remove('open'); // modal hide kore
-  form.reset(); // form clear kore
-  editingIndex = null; // edit index reset kore
+  modal.classList.remove('open'); // Remove "open" class to hide modal
+  form.reset(); // Clear form inputs
+  editingIndex = null; // Reset editing index
 };
 
-// ---------------------- ADD BUTTON ------------------------
+// ---------------------- ADD BUTTON ----------------------
+
+// When "Add User" button is clicked
 document.getElementById('addBtn').onclick = () => {
-  editingIndex = null; // not editing existing user
-  form.reset(); // form empty kore
-  openModal('Add User'); // modal open kore "Add User" title diye
+  editingIndex = null; // Not editing an existing user
+  form.reset(); // Clear the form
+  openModal('Add User'); // Open modal with title
 };
 
-// ---------------------- SAVE BUTTON ------------------------
-document.getElementById('saveBtn').onclick = e => {
-  e.preventDefault(); // e.preventDefault(): reload/submit রোধ করে
-  if (!form.reportValidity()) return; // form validation check kore
+// ---------------------- SAVE BUTTON ----------------------
 
-  // form theke sob input value neya
+// When "Save" button in modal is clicked
+document.getElementById('saveBtn').onclick = e => {
+  e.preventDefault(); // Prevent form from submitting/reloading
+  if (!form.reportValidity()) return; // Stop if form inputs are invalid
+
+  // Get all form data as an object {name: "...", email: "...", ...}
   const formData = Object.fromEntries(new FormData(form).entries());
 
-  // salary number hishebe convert kore
-  formData.salary = Number(formData.salary);
-
-  // jodi editingIndex null, tahole new user add hobe, na hole update hobe
+  // If editingIndex is null → add new user; else → update existing user
   if (editingIndex === null) data.push(formData);
   else data[editingIndex] = formData;
 
-  // save + render + modal close
-  save();
-  render(); //সেভের পর UI refresh করে নতুন data দেখায়
-  closeModal();
+  localStorage.setItem(LS_KEY, JSON.stringify(data)); // Save updated data to localStorage
+  modal.style.display = 'none'; // Hide modal
+  render(); // Refresh table with new data
 };
 
-// ---------------------- CANCEL / CLOSE MODAL ------------------------
+// ---------------------- CANCEL / CLOSE MODAL ----------------------
+
+// Close modal when clicking "Cancel" button
 document.getElementById('cancelBtn').onclick = e => {
-  e.preventDefault();
-  closeModal();
+  e.preventDefault(); // Prevent default behavior
+  closeModal(); // Call modal close function
 };
+
+// Close modal when clicking "X" button
 document.getElementById('closeModal').onclick = closeModal;
 
-// modal er background click korle close hobe
+// Close modal when clicking outside the modal content
 modal.addEventListener('click', e => {
-  if (e.target === modal) closeModal();
+  if (e.target === modal) closeModal(); // If click is on modal background, close modal
 });
 
-// ---------------------- EDIT / DELETE ACTION ------------------------
-tbody.addEventListener('click', e => {
-  const iEdit = e.target.dataset.edit,
-    iDel = e.target.dataset.del;
+// ---------------------- EDIT / DELETE USER ----------------------
 
-  // jodi edit button click hoi
-  //ইউজার edit করতে চাইলে সেই ইউজারের ডেটা form-এ auto fill করে modal খুলে দেয়|
+// Event delegation: listen for clicks inside table body
+tbody.addEventListener('click', e => {
+  const iEdit = e.target.dataset.edit; // Get edit index if edit button clicked
+  const iDel = e.target.dataset.del; // Get delete index if delete button clicked
+
+  // -------- EDIT USER --------
   if (iEdit !== undefined) {
-    editingIndex = Number(iEdit); // kon user edit hocche ta dhore
-    const u = data[editingIndex]; // oi user er info
-    // form e user data fill kore
-    form.name.value = u.name; //form-এর name ইনপুট ফিল্ডে u অবজেক্টের name মানটা বসাও।
+    editingIndex = Number(iEdit); // Convert index string to number
+    const u = data[editingIndex]; // Get user object at that index
+
+    // Fill form inputs with user data
+    form.name.value = u.name;
     form.email.value = u.email;
     form.id.value = u.id;
     form.salary.value = u.salary;
     form.dob.value = u.dob;
-    openModal('Edit User'); // modal open kore
+
+    openModal('Edit User'); // Open modal with title "Edit User"
   }
-  // jodi delete button click hoi
+
+  // -------- DELETE USER --------
   if (iDel !== undefined) {
-    //অংশকাজ(iDel):delete করতে চাওয়া index (string হিসেবে আসে)
-    // Number(iDel):string কে number বানায়|
-    // idx:সেই number index টা ধরে রাখে|
-
-    const idx = Number(iDel); //এই লাইনটা iDel নামের কোনো value (string) কে number-এ রূপান্তর করছে| এবং সেটাকে idx (index) নামে নতুন ভ্যারিয়েবলে রাখছে।
-
-    confirm(`Delete "${data[idx].name}"?`);
-    data.splice(idx, 1); // oi user ke array theke delete kore
-    save(); // update save kore
-    render(); // table refresh kore
+    const idx = Number(iDel); // Convert index to number
+    if (confirm(`Delete "${data[idx].name}"?`)) {
+      // Confirm deletion
+      data.splice(idx, 1); // Remove user from array
+      localStorage.setItem(LS_KEY, JSON.stringify(data)); // Save updated array
+      render(); // Refresh table
+    }
   }
 });
-  // ---------------------- SAMPLE DATA ------------------------
+
+// ---------------------- SEARCH FUNCTION ----------------------
+
+// Filter table rows as user types in search box
+search.addEventListener('input', () => {
+  const text = search.value.toLowerCase(); // Convert input to lowercase
+
+  // Filter data by name only
+  const filtered = data.filter(u => u.name.toLowerCase().includes(text));
+
+  render(filtered); // Render only matching rows
+});
+
+// ---------------------- SAMPLE DATA ----------------------
+
+// If localStorage empty, add default users
 if (!data.length) {
-  // jodi localStorage khali thake, default data add korbe
   data = [
     {
       name: 'John Doe',
@@ -170,9 +177,8 @@ if (!data.length) {
       dob: '1990-11-02',
     },
   ];
-  save(); // localStorage e save kore
+  localStorage.setItem(LS_KEY, JSON.stringify(data)); // Save default data
 }
-// ---------------------- INITIAL LOAD ------------------------
-render(); // page load e table render kore
 
-
+// ---------------------- INITIAL LOAD ----------------------
+render(); // Render table when page loads
