@@ -148,17 +148,23 @@ tbody.addEventListener('click', e => {
 // ---------------------- SEARCH FUNCTION ----------------------
 
 // Filter table rows as user types in search box
-search.addEventListener('input', () => {
-  const text = search.value.toLowerCase(); // Convert input to lowercase
+//search.addEventListener('input', () => {
+  //const text = search.value.toLowerCase(); // Convert input to lowercase
 
   // Filter data by name only
-  const filtered = data.filter(u => u.name.toLowerCase().includes(text));
+ // const filtered = data.filter(u => u.name.toLowerCase().includes(text));
 
-  render(filtered); // Render only matching rows
-});
+  //render(filtered); // Render only matching rows
+//});
 
 // ---------------------- SAMPLE DATA ----------------------
+search.addEventListener('input', () => {
+  const text = search.value.toLowerCase();
 
+  const filtered = data.filter(u => u.name.toLowerCase().includes(text));
+
+  render(filtered);
+});
 // If localStorage empty, add default users
 if (!data.length) {
   data = [
