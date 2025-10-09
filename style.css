@@ -39,10 +39,15 @@
      }
      .head{
       display: flex;
-      justify-content: space-between;
+      grid-template-columns: 1fr, 1fr, 1fr;
       align-items: center;
       padding: 20px 30px;
       border-bottom: 1px solid var(--line);
+      gap: 150px;
+      width: 100%;
+     }
+     .head input{
+      width: 130px;
      }
      .head h2{
       margin: 0;
@@ -121,7 +126,9 @@
       text-align: center;
       padding: 36px 0;
      }
-
+      .input{
+        width: 130px;
+      }
      /* modal */
 
      .modal{
