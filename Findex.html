@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocary</title>
+  <style>
+    .Grocary{
+      align-items: center;
+      display: flex;
+    }
+   .content-wrapper{
+    width: 80%;
+    margin-top: 60px;
+    align-items: center;
+    background-color: aliceblue;
+    padding: 40px;
+    height: 40vh;
+    text-align: center;
+   }
+   .gro-content{
+    margin-top: 50px;
+    padding: 80px;
+    margin-right: 80px;
+    width: 79%;
+    height: 90px;
+    background-color: white;
+   }
+   .gro-top{
+    display: flex;
+    width: 100%;
+    gap: 35%;
+    height: 40px;
+    align-items: center;
+   }
+  .button{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+   }
+   .submit{
+    background-color: black;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+
+   }
+   input{
+    padding: 8px;
+    border-radius: 6px;
+    background-color: whitesmoke;
+   }
+  </style>
+</head>
+<section class="Grocary">
+  <div class="content-wrapper">
+    <div class="gro-top">
+      <button type="button" class="button" id="popBtn">pop</button>
+      <h1>Add Item</h1>
+      <button type="button" class="button" id="shiftBtn">shift</button>
+    </div>
+    <div class="gro-content">
+      <input type="text" id="itemInput" placeholder="add now" />
+      <button type="button" class="submit" id="pushBtn">push</button>
+    </div>
+
+    <ul id="itemList"></ul>
+  </div>
+</section>
+
+<script>
+  let items = [];
+  const itemInput = document.getElementById("itemInput");
+  const itemList = document.getElementById("itemList");
+  const pushBtn = document.getElementById("pushBtn");
+  const popBtn = document.getElementById("popBtn");
+  const shiftBtn = document.getElementById("shiftBtn");
+
+    // === Render list ===
+      function renderItems() {
+        itemList.innerHTML = "";
+        items.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          itemList.appendChild(li);
+        });
+      }
+
+
+     pushBtn.addEventListener('click', () => {
+      const newItem = itemInput.value.trim();
+      if (newItem) {
+        items.push(newItem);
+        itemInput.value = '';
+        renderItems();
+      }
+     });
+
+     popBtn.addEventListener('click', () => {
+      if (items.length > 0){
+        items.pop();
+        renderItems();
+      } else{
+        alert('No items to delete');
+      }
+     });
+
+     shiftBtn.addEventListener('click', () => {
+      if (items.length > 0){
+        items.shift();
+        renderItems();
+      } else{
+        alert('No items to delete');
+      }
+     });
+
+     renderItems();
+
+
+
+</script>
+
+<body>
+
+</body>
+</html>
